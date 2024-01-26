@@ -10,7 +10,6 @@ export const register = asyncHandler(async (req, res) => {
       firstName,
       lastName,
       email,
-      phone,
       password,
       picturePath,
       friends,
@@ -28,7 +27,6 @@ export const register = asyncHandler(async (req, res) => {
       firstName,
       lastName,
       email,
-      phone,
       password: passwordHash,
       picturePath,
       friends,
@@ -49,9 +47,9 @@ export const login = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-
     //CHECK WEATHER USER EXIST OR NOT
-    if (!user) return res.status(400).json({ msg: "User does not exist" });
+    if (user === null)
+      return res.status(400).json({ msg: "User does not exist" });
 
     //CHECK WEATHER PASSWORD IS CORRECT OR NOT
     const isMatch = await bcrypt.compare(password, user.password);

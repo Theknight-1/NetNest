@@ -10,6 +10,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 const PATH = 5000;
 
+import User from "../models/User.js";
+import Post from "../models/Posts.js";
+import { users, posts } from "../data/index.js";
+
 // ALL FILES IMPORTS
 import { register } from "../controllers/auth.js";
 import { createPost } from "../controllers/posts.js";
@@ -26,19 +30,18 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json({ limit: "30mb" }));
-app.use(bodyParser.json({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+app.use("/images", express.static(path.join(__dirname, "../public/images")));
 
 // File Storage
 const storage = multer.diskStorage({
   destination: function (req, res, cb) {
-    cb(null, "public/assets");
+    cb(null, "public/images");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname + "-" + Date.now());
+    cb(null, file.originalname);
   },
 });
 
@@ -46,7 +49,7 @@ const upload = multer({ storage: storage });
 
 // ROUTES WITH FILES
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts",verifyToken, upload.single("picture"), createPost);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 // ROUTES
 app.use("/auth", authRoute);
@@ -73,4 +76,6 @@ app.get("/", (req, res) => {
 
 app.listen(PATH, () => {
   console.log(`The server is started to port ${PATH}`);
+  // User.insertMany(users);
+  // Post.insertMany(posts);
 });
