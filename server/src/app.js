@@ -60,7 +60,7 @@ app.use("/posts", postRoutes);
 import connectToMongoDB from "../db/conn.js";
 import { verifyToken } from "../middleware/auth.js";
 connectToMongoDB(
-  "mongodb+srv://himanshusaxena5005:himanshusaxena@cluster0.kr2tlaw.mongodb.net/?retryWrites=true&w=majority"
+  "Put mongoDB url here"
 )
   .then(() => {
     console.log("Database Successfully Connected");
