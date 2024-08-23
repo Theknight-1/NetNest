@@ -22,8 +22,8 @@ import {
 } from "@mui/icons-material"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import FlexBetween from '/src/components/flexBetween.jsx'
-import UserImage from '/src/components/UserImage'
+import FlexBetween from 'components/FlexBetween'
+import UserImage from 'components/UserImage'
 import { setMode, setLogout } from '/src/state/index.js'
 
 
