@@ -5,4 +5,4 @@ const connectToMongoDB = asyncHandler(async (url) => {
   return await mongoose.connect(url);
 });
 
-export default connectToMongoDB
+export default connectToMongoDB;
