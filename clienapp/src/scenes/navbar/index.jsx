@@ -133,7 +133,7 @@ const NavbarPage = () => {
           <FlexBetween
             gap="0.9rem"
             p="1.1rem"
-            onClick={() => navigate(`/profile/${userId}`)}
+            // onClick={() => navigate(`/profile/${userId}`)}
           >
             <FlexBetween gap="1rem">
               <UserImage image={picturePath} size={"40px"} />

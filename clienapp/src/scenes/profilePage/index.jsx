@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import NavbarPage from '/src/scenes/navbar';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@emotion/react';
@@ -20,6 +20,9 @@ const ProfilePage = () => {
     const [user, setUser] = useState({})
     const token = useSelector((state) => state.token)
 
+    // check for the screen size
+    const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+
 
 
     const getUser = async (userId) => {
@@ -38,6 +41,7 @@ const ProfilePage = () => {
         <>
             <NavbarPage />
             <Box
+                border={""}
                 width="100%"
                 height="90%"
                 display="flex"
@@ -45,39 +49,43 @@ const ProfilePage = () => {
                     justifyContent: "center",
                     alignItems: "center"
                 }}
-                >
+            >
                 <Box
                     height="90%"
-                    width="65%"
-                    display="flex"
+                    width={isNonMobileScreens ? "65%" : "90%"}
+                    display={isNonMobileScreens ? "flex" : ""}
                     flexDirection="row"
-                    >
+                >
                     <Box
                         display="flex"
                         flexDirection="column"
                         flexBasis="50%"
                         sx={{
                             justifyContent: "center",
-                            borderRadius:"15px",
-                            padding: "2%",
+                            borderRadius: "15px",
+                            margin: "auto",
+                            padding: "1%",
                             backgroundColor: dark,
+                            textAlign: "center"
                         }}
                     >
                         <Box
                             display="flex"
+                            
                             flexBasis="20%"
                             sx={{
                                 backgroundColor: "yellow",
                             }}
                         >
-                           <FlexBetween>
+                            <FlexBetween>
                                 <Box
                                     color={"black"}
                                     padding={"1rem"}
+                                    
                                 >
                                     <h1>NetNest</h1>
                                 </Box>
-                            </FlexBetween> 
+                            </FlexBetween>
                         </Box>
                         <Box
                             display="flex"
@@ -86,29 +94,29 @@ const ProfilePage = () => {
                             alignItems="center"
                             flexBasis="60%"
                             sx={{
-                                backgroundColor :  `${theme.palette.mode === "dark" ? primaryLight : neutralLight}`
+                                backgroundColor: `${theme.palette.mode === "dark" ? primaryLight : neutralLight}`
                             }}
                         >
-                                <Typography
-                                    variant='h1'
-                                    fontWeight="800"
-                                    padding="2%"
-                                    fontSize="5rem"
-                                    position="absolute"
-                                    top="50px"
-                                    lineHeight={.7}
-                                >
-                                    {user.firstName}<br/>{user.lastName}
-                                </Typography>
-                                <Typography
-                                    variant='body1'
-                                    position="absolute"
-                                    top="200px"
-                                    left="100px"
-                                    right="100px"
-                                > 
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, atque? Nisi labore dolore ex veniam? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima ipsum eum neque sit fugit dolorem veritatis illum quae natus praesentium?
-                                </Typography>
+                            <Typography
+                                variant='h1'
+                                fontWeight="800"
+                                padding="2%"
+                                fontSize="5rem"
+                                position="absolute"
+                                top="50px"
+                                lineHeight={.7}
+                            >
+                                {user.firstName}<br />{user.lastName}
+                            </Typography>
+                            <Typography
+                                variant='body1'
+                                position="absolute"
+                                top="200px"
+                                left="100px"
+                                right="100px"
+                            >
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, atque? Nisi labore dolore ex veniam? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima ipsum eum neque sit fugit dolorem veritatis illum quae natus praesentium?
+                            </Typography>
                         </Box>
                         <Box
                             display="flex"
@@ -117,13 +125,13 @@ const ProfilePage = () => {
                                 backgroundColor: "yellow"
                             }}
                         >
-                            
+
                         </Box>
                     </Box>
                     <Box
                         flexBasis="50%"
                     >
-                        <img src={`http://localhost:5000/images/${user.picturePath}`} alt="User Image" height={"100%"} width={"100%"} style={{ objectFit: "cover", padding:"10px" }} />
+                        <img src={`http://localhost:5000/images/${user.picturePath}`} alt="User Image" height={"100%"} width={"100%"} style={{ objectFit: "cover", padding: "10px" }} />
                     </Box>
                 </Box>
             </Box>

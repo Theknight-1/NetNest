@@ -37,9 +37,17 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  if (posts.length === 0) {
+    return <div style={{ textAlign: "center", marginTop: "30px" }}>
+      NO POSTS TO SHOW
+      <br />
+      Post something
+    </div>
+  }
+
   return (
     <>
-      {posts.map(
+      {posts?.map(
         ({
           _id,
           userId,

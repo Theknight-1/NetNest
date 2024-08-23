@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "/src/state";
 
+// eslint-disable-next-line react/prop-types
 const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
@@ -53,13 +54,14 @@ const MyPostWidget = ({ picturePath }) => {
         });
         const posts = await response.json();
         dispatch(setPosts({ posts }));
+        window.location.reload();
         setImage(null);
         setPost("");
     };
 
     return (
         <WidgetWrapper>
-            <FlexBetween gap="1.5rem">
+            <FlexBetween gap="1.5rem" >
                 <UserImage image={picturePath} />
                 <InputBase
                     placeholder="What's on your mind..."

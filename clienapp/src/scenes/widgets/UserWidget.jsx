@@ -54,7 +54,7 @@ const UserWidget = ({ userId, picturePath }) => {
             <FlexBetween
                 gap="1.2rem"
                 p="1.3rem"
-                onClick={() => navigate(`/profile/${userId}`)}
+            // onClick={() => navigate(`/profile/${userId}`)}
             >
                 <FlexBetween gap="1rem">
                     <UserImage image={picturePath} />
@@ -119,7 +119,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
                 <FlexBetween gap="1rem" mb="0.5rem">
                     <FlexBetween gap="1rem">
-                        <img src="../assets/twitter.png" alt="twitter" />
+                        <img src="/src/assets/twitter.png" alt="twitter" style={{ width: " 40px", height: "40px" }} />
                         <Box>
                             <Typography color={main} fontWeight="500">
                                 Twitter
@@ -132,7 +132,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
                 <FlexBetween gap="1rem">
                     <FlexBetween gap="1rem">
-                        <img src="../assets/linkedin.png" alt="linkedin" />
+                        <img src="/src/assets/linkedin.png" alt="linkedin" style={{ width: " 50px", height: "50px" }} />
                         <Box>
                             <Typography color={main} fontWeight="500">
                                 Linkedin

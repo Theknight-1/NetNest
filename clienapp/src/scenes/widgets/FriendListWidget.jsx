@@ -12,7 +12,6 @@ const FriendListWidget = ({ userId }) => {
     const friends = useSelector((state) => state.user.friends);
 
     const getFriends = async (userId) => {
-        console.log(userId, " friend ki id");
         const response = await fetch(
             `http://localhost:5000/users/${userId}/friends`,
             {
@@ -21,7 +20,7 @@ const FriendListWidget = ({ userId }) => {
             }
         );
         const data = await response.json();
-        console.log(data);
+        console.log("Fetched friends data:", data); // Check if this is an array
         dispatch(setFriends({ friends: data }));
     };
 
@@ -40,7 +39,7 @@ const FriendListWidget = ({ userId }) => {
                 Friend List
             </Typography>
             <Box display="flex" flexDirection="column" gap="1.5rem">
-                {friends?.map((friend) => (
+                {Array.isArray(friends) && friends.map((friend) => (
                     <Friend
                         key={friend._id}
                         friendId={friend._id}

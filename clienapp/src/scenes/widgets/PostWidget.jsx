@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
     ChatBubbleOutlineOutlined,
     FavoriteBorderOutlined,
@@ -48,7 +49,7 @@ const PostWidget = ({
     };
 
     return (
-        <WidgetWrapper m="1rem .8rem">
+        <WidgetWrapper m="1rem .8rem" >
             <Friend
                 friendId={postUserId}
                 name={name}
