@@ -7,9 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Build directories
 node_modules
 dist
 dist-ssr
+
+# Environment files
 *.local
 .env
 env
@@ -24,4 +27,3 @@ env
 *.njsproj
 *.sln
 *.sw?
-c

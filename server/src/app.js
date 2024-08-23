@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-const PATH = 5000;
+const PATH = process.env.PORT || 5000;
 
 import User from "../models/User.js";
 import Post from "../models/Posts.js";
@@ -59,9 +59,7 @@ app.use("/posts", postRoutes);
 //DATABASE CONNECTION
 import connectToMongoDB from "../db/conn.js";
 import { verifyToken } from "../middleware/auth.js";
-connectToMongoDB(
-  "Put mongoDB url here"
-)
+connectToMongoDB("Put mongoDB url here")
   .then(() => {
     console.log("Database Successfully Connected");
   })
