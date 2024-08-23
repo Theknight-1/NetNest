@@ -29,7 +29,7 @@ export const createPost = asyncHandler(async (req, res) => {
 //READ
 export const getFeedPosts = asyncHandler(async (req, res) => {
   try {
-    const post = await Post.find();
+    const post = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(post);
   } catch (error) {
     res.status(404).json({ message: error.message });
