@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -10,11 +10,12 @@ import {
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "/src/state/index.js";
 import Dropzone from "react-dropzone";
 import FlexBetween from "/src/components/FlexBetween";
+import Cookies from "js-cookie";
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -56,6 +57,13 @@ const Form = () => {
     const isRegister = pageType === "register";
 
 
+    useEffect(() => {
+        const token = Cookies.get("Authorization")
+        if (token) {
+            return navigate("/home")
+        }
+    }, [])
+
     // FUNCTION FOR REGISTERING THE USER
     const register = async (values, onSubmitProps) => {
         // this allows us to send form info with image
@@ -65,39 +73,47 @@ const Form = () => {
         }
         formData.append("picturePath", values.picture.name);
 
-        const savedUserResponse = await fetch(
-            "https://netnest.onrender.com/auth/register",
-            {
-                method: "POST",
-                body: formData,
-            }
-        );
-        const savedUser = await savedUserResponse.json();
-        onSubmitProps.resetForm();
+        try {
+            const savedUserResponse = await fetch(
+                "https://netnest.onrender.com/auth/register",
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+            const savedUser = await savedUserResponse.json();
+            onSubmitProps.resetForm();
 
-        if (savedUser) {
-            setPageType("login");
+            if (savedUser) {
+                setPageType("login");
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
 
     // FUNCTION FOR LOGGING IN THE USER
     const login = async (values, onSubmitProps) => {
-        const loggedInResponse = await fetch("https://netnest.onrender.com/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
-        });
-        const loggedIn = await loggedInResponse.json();
-        onSubmitProps.resetForm();
-        if (loggedIn) {
-            dispatch(
-                setLogin({
-                    user: loggedIn.user,
-                    token: loggedIn.token,
-                })
-            );
-            navigate("/home");
+        try {
+            const loggedInResponse = await fetch("https://netnest.onrender.com/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(values),
+            });
+            const loggedIn = await loggedInResponse.json();
+            onSubmitProps.resetForm();
+            if (loggedIn) {
+                dispatch(
+                    setLogin({
+                        user: loggedIn.user,
+                        token: loggedIn.token,
+                    })
+                );
+                navigate("/home");
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 

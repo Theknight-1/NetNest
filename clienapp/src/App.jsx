@@ -8,7 +8,8 @@ import { themeSettings } from "./theme.js";
 // COMPONENTS IMPORTS
 import HomePage from "./scenes/homePage/index.jsx"
 import Login from "./scenes/loginPage/index.jsx"
-import ProfilePage from "./scenes/profilePage/index.jsx"
+// import ProfilePage from "./scenes/profilePage/index.jsx"
+import NotFound from "../src/components/NotFound.jsx";
 
 
 function App() {
@@ -22,9 +23,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route exact path="/" element={<Login />} />
+            <Route exact path="/" element={!isAuth ? <Login /> : <HomePage />} />
             <Route exact path="/home" element={isAuth ? <HomePage /> : <Navigate to="/" />} />
             {/* <Route exact path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} /> */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

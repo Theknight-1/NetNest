@@ -1,4 +1,4 @@
-
+import { lazy, Suspense } from "react"
 import { Box, useMediaQuery } from "@mui/material";
 import NavbarPage from "../navbar/index";
 import { useSelector } from "react-redux";
@@ -41,9 +41,11 @@ const HomePage = () => {
           flexBasis={isNonMobileScreens ? "25%" : undefined}
         >
           <AdvertWidget />
-          <FriendListWidget userId={_id} />
+          <Suspense fallback={<div>Loading friends...</div>}>
+            <FriendListWidget userId={_id} />
+          </Suspense>
         </Box>
-        
+
       </Box>
     </Box>
   );

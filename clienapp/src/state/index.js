@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 const initialState = {
   mode: "light",
@@ -19,10 +20,12 @@ export const authSlice = createSlice({
     setLogin: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      Cookies.set("Authorization", action.payload.token, { expires: 7 });
     },
     setLogout: (state) => {
       state.user = null;
       state.token = null;
+      Cookies.remove("Authorization");
     },
     setFriends: (state, action) => {
       if (state.user) {

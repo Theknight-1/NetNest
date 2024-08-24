@@ -36,7 +36,7 @@ const PostWidget = ({
     const primary = palette.primary.main;
 
     const patchLike = async () => {
-        const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+        const response = await fetch(`https://netnest.onrender.com/posts/${postId}/like`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -65,10 +65,10 @@ const PostWidget = ({
                     height="50%"
                     alt="post"
                     style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-                    src={`http://localhost:5000/images/${picturePath}`}
+                    src={`https://netnest.onrender.com/images/${picturePath}`}
                 />
             )}
-            <FlexBetween mt="0.25rem">
+            <FlexBetween mt="0.25rem" >
                 <FlexBetween gap="1rem">
                     <FlexBetween gap="0.3rem">
                         <IconButton onClick={patchLike}>
@@ -81,12 +81,12 @@ const PostWidget = ({
                         <Typography>{likeCount}</Typography>
                     </FlexBetween>
 
-                    <FlexBetween gap="0.3rem">
+                    {/* <FlexBetween gap="0.3rem">
                         <IconButton onClick={() => setIsComments(!isComments)}>
                             <ChatBubbleOutlineOutlined />
                         </IconButton>
                         <Typography>{comments.length}</Typography>
-                    </FlexBetween>
+                    </FlexBetween> */}
                 </FlexBetween>
 
                 <IconButton>

@@ -13,20 +13,23 @@ const FriendListWidget = ({ userId }) => {
 
     const getFriends = async (userId) => {
         const response = await fetch(
-            `http://localhost:5000/users/${userId}/friends`,
+            `https://netnest.onrender.com/users/${userId}/friends`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
         const data = await response.json();
-        console.log("Fetched friends data:", data); // Check if this is an array
         dispatch(setFriends({ friends: data }));
     };
+
+
 
     useEffect(() => {
         getFriends(userId);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
 
     return (
         <WidgetWrapper>
@@ -48,6 +51,15 @@ const FriendListWidget = ({ userId }) => {
                         userPicturePath={friend.picturePath}
                     />
                 ))}
+                {
+                    friends.length === 0 && (
+                        <div style={{ textAlign: "center" }}>
+                            NO FRIENDS TO SHOW
+                            <br />
+                            add some.
+                        </div>
+                    )
+                }
             </Box>
         </WidgetWrapper>
     );
