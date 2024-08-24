@@ -10,12 +10,13 @@ import HomePage from "./scenes/homePage/index.jsx"
 import Login from "./scenes/loginPage/index.jsx"
 // import ProfilePage from "./scenes/profilePage/index.jsx"
 import NotFound from "../src/components/NotFound.jsx";
+import Cookies from "js-cookie";
 
 
 function App() {
   const mode = useSelector(state => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode])
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = Boolean(Cookies.get("Authorization"));
 
   return (
     <div className="app">
