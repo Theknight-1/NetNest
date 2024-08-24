@@ -3,6 +3,7 @@ This is a [React.js](https://reactjs.org/) & [Node.js](https://nodejs.org/) proj
 ## Getting Started
 
 First, run the backend server:
+
 ```bash
 npm run start
 # or
@@ -12,7 +13,9 @@ pnpm start
 # or
 bun start
 ```
+
 Second, run the Frontend server:
+
 ```bash
 npm run dev
 # or
@@ -24,6 +27,10 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Preview
+
+![ALT text](/clienapp/public/netnest.png)
 
 You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
 
