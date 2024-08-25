@@ -7,6 +7,8 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
+import cloudinary from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { fileURLToPath } from "url";
 const PATH = process.env.PORT || 5000;
 
@@ -32,26 +34,53 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use("/images", express.static(path.join(__dirname, "../public/images")));
 
 // File Storage
-const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "public/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+// const storage = multer.diskStorage({
+//   destination: function (req, res, cb) {
+//     cb(null, "public/images");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+
+//cloudinary configuration
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// File storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: "uploads",
+    allowed_formats: ["jpg", "png", "jpeg", "gif"],
   },
 });
 
 const upload = multer({ storage: storage });
 
-// ROUTES WITH FILES
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+// Routes with file upload
+app.post("/auth/register", upload.single("picture"), (req, res) => {
+  register(req, res);
+});
 
-// ROUTES
+app.post("/posts", verifyToken, upload.single("picture"), (req, res) => {
+  createPost(req, res);
+});
+
+// Standard Routes
 app.use("/auth", authRoute);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);

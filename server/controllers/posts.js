@@ -5,7 +5,11 @@ import Post from "../models/Posts.js";
 //CREATE
 export const createPost = asyncHandler(async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
+    const { userId, description } = req.body;
+    if (!userId || !description) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
     const user = await User.findById(userId);
     const newPost = new Post({
       userId,
@@ -14,13 +18,13 @@ export const createPost = asyncHandler(async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath: req.file ? req.file.path : null,
       likes: {},
       comments: {},
     });
     await newPost.save();
-    const post = await Post.find();
-    res.status(201).json(post);
+    const posts = await Post.find();
+    res.status(201).json(posts);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
