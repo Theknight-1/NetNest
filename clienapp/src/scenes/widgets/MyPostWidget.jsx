@@ -24,6 +24,7 @@ import WidgetWrapper from "/src/components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "/src/state";
+import { API_URL } from "../../constant/config";
 
 // eslint-disable-next-line react/prop-types
 const MyPostWidget = ({ picturePath }) => {
@@ -44,20 +45,30 @@ const MyPostWidget = ({ picturePath }) => {
         formData.append("description", post);
         if (image) {
             formData.append("picture", image);
-            formData.append("picturePath", image.name);
+            formData.append("picturePath", encodeURIComponent(image.name)); // Encode the file name
         }
+        try {
+            const response = await fetch(`${API_URL}/posts`, {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            });
 
-        const response = await fetch(`https://netnest.onrender.com/posts`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-        });
-        const posts = await response.json();
-        dispatch(setPosts({ posts }));
-        window.location.reload();
-        setImage(null);
-        setPost("");
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Failed to post:", errorData.message);
+                return;
+            }
+
+            const posts = await response.json();
+            dispatch(setPosts({ posts }));
+            setImage(null);
+            setPost("");
+        } catch (error) {
+            console.error("Error during posting:", error);
+        }
     };
+
 
     return (
         <WidgetWrapper>

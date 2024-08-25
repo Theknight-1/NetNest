@@ -16,6 +16,7 @@ import { setLogin } from "/src/state/index.js";
 import Dropzone from "react-dropzone";
 import FlexBetween from "/src/components/FlexBetween";
 import Cookies from "js-cookie";
+import { API_URL } from "../../constant/config";
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -66,21 +67,26 @@ const Form = () => {
 
     // FUNCTION FOR REGISTERING THE USER
     const register = async (values, onSubmitProps) => {
-        // this allows us to send form info with image
+        // Create a new FormData object
         const formData = new FormData();
-        for (let value in values) {
-            formData.append(value, values[value]);
-        }
+
+        // Append all form values to FormData
+        Object.keys(values).forEach(key => {
+            if (key === "picture") {
+                formData.append(key, values[key]); // Append the file object directly
+            } else {
+                formData.append(key, values[key]);
+            }
+        });
+
         formData.append("picturePath", values.picture.name);
 
         try {
-            const savedUserResponse = await fetch(
-                "https://netnest.onrender.com/auth/register",
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
+            const savedUserResponse = await fetch(`${API_URL}/auth/register`, {
+                method: "POST",
+                body: formData,
+            });
+
             const savedUser = await savedUserResponse.json();
             onSubmitProps.resetForm();
 
@@ -93,10 +99,11 @@ const Form = () => {
     };
 
 
+
     // FUNCTION FOR LOGGING IN THE USER
     const login = async (values, onSubmitProps) => {
         try {
-            const loggedInResponse = await fetch("https://netnest.onrender.com/auth/login", {
+            const loggedInResponse = await fetch(`${API_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values),

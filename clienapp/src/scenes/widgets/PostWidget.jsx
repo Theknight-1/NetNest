@@ -12,6 +12,7 @@ import WidgetWrapper from "/src/components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "/src/state/index.js";
+import { API_URL } from "../../constant/config";
 
 const PostWidget = ({
     postId,
@@ -36,7 +37,7 @@ const PostWidget = ({
     const primary = palette.primary.main;
 
     const patchLike = async () => {
-        const response = await fetch(`https://netnest.onrender.com/posts/${postId}/like`, {
+        const response = await fetch(`${API_URL}/posts/${postId}/like`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -65,7 +66,7 @@ const PostWidget = ({
                     height="50%"
                     alt="post"
                     style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-                    src={`https://netnest.onrender.com/images/${picturePath}`}
+                    src={`${picturePath}`}
                 />
             )}
             <FlexBetween mt="0.25rem" >
@@ -95,7 +96,7 @@ const PostWidget = ({
             </FlexBetween>
             {isComments && (
                 <Box mt="0.5rem">
-                    {comments.map((comment, i) => (
+                    {comments?.map((comment, i) => (
                         <Box key={`${name}-${i}`}>
                             <Divider />
                             <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>

@@ -2,31 +2,36 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "/src/state";
 import PostWidget from "./PostWidget";
+import { API_URL } from "../../constant/config";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector((state) => state.posts) || [];
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch("https://netnest.onrender.com/posts", {
+    const response = await fetch(`${API_URL}/posts`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+    if (Array.isArray(data)) {
+      dispatch(setPosts({ posts: data }));
+    }
   };
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `https://netnest.onrender.com/posts/${userId}/posts`,
+      `${API_URL}/posts/${userId}/posts`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+    if (Array.isArray(data)) {
+      dispatch(setPosts({ posts: data }));
+    }
   };
 
   useEffect(() => {
@@ -37,17 +42,19 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (posts.length === 0) {
-    return <div style={{ textAlign: "center", marginTop: "30px" }}>
-      NO POSTS TO SHOW
-      <br />
-      Post something
-    </div>
+  if (!posts.length) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "30px" }}>
+        NO POSTS TO SHOW
+        <br />
+        Post something
+      </div>
+    );
   }
 
   return (
     <>
-      {posts?.map(
+      {posts.map(
         ({
           _id,
           userId,

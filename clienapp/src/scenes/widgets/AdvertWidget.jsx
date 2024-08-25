@@ -1,6 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "/src/components/FlexBetween";
 import WidgetWrapper from "/src/components/WidgetWrapper";
+import { API_URL } from "../../constant/config";
 
 const AdvertWidget = () => {
     const { palette } = useTheme();
@@ -20,7 +21,7 @@ const AdvertWidget = () => {
                 width="100%"
                 height="auto"
                 alt="advert"
-                src="https://netnest.onrender.com/images/info4.jpeg"
+                src={`${API_URL}/images/info4.jpeg`}
                 style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
             />
             <FlexBetween>

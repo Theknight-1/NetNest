@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "/src/state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import { API_URL } from "../constant/config";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
     const patchFriend = async () => {
         const response = await fetch(
-            `https://netnest.onrender.com/users/${_id}/${friendId}`,
+            `${API_URL}/users/${_id}/${friendId}`,
             {
                 method: "PATCH",
                 headers: {

@@ -18,7 +18,7 @@ const UserImage = ({ image, size = "60px" }) => {
                 border="1px white"
                 height={size}
                 alt="user"
-                src={`https://netnest.onrender.com/images/${image}`}
+                src={`${image}`}
                 onError={(e) => console.error("Image failed to load", { e })}
             />
         </Box>

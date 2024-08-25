@@ -4,6 +4,7 @@ import WidgetWrapper from "/src/components/WidgetWrapper";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "/src/state/index.js";
+import { API_URL } from "../../constant/config";
 
 const FriendListWidget = ({ userId }) => {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const FriendListWidget = ({ userId }) => {
 
     const getFriends = async (userId) => {
         const response = await fetch(
-            `https://netnest.onrender.com/users/${userId}/friends`,
+            `${API_URL}/users/${userId}/friends`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },

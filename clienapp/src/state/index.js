@@ -35,14 +35,19 @@ export const authSlice = createSlice({
       }
     },
     setPosts: (state, action) => {
-      state.posts = action.payload.posts;
+      if (Array.isArray(action.payload.posts)) {
+        state.posts = action.payload.posts;
+      } else {
+        console.error("Posts payload is not an array.");
+      }
     },
     setPost: (state, action) => {
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts;
+      if (state.posts.length > 0) {
+        const updatedPosts = state.posts.map((post) =>
+          post._id === action.payload.post._id ? action.payload.post : post
+        );
+        state.posts = updatedPosts;
+      }
     },
   },
 });
