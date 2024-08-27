@@ -23,7 +23,7 @@ export const createPost = asyncHandler(async (req, res) => {
       comments: {},
     });
     await newPost.save();
-    const posts = await Post.find();
+    const posts = await Post.find().sort({ createPost: 1 });
     res.status(201).json(posts);
   } catch (error) {
     res.status(409).json({ message: error.message });
