@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import NavbarPage from '/src/scenes/navbar';
-import { useSelector } from 'react-redux';
-import { useTheme } from '@emotion/react';
-import FlexBetween from '/src/components/FlexBetween';
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useTheme } from "@emotion/react";
+import FlexBetween from "/src/components/FlexBetween";
+import WidgetWrapper from "/src/components/WidgetWrapper";
+import UserImage from "/src/components/UserImage"; // Assuming you have this component
+import PostWidget from "../../scenes/widgets/PostWidget";
+import PostsWidget from "../../scenes/widgets/PostsWidget";
+import About from "../../components/About";
 
 const ProfilePage = () => {
-    const { userId } = useParams()
+    const { userId } = useParams();
     const { palette } = useTheme();
-    const theme = useTheme()
+    const theme = useTheme();
     const primaryLight = palette.primary.light;
     const primaryDark = palette.primary.dark;
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
     const main = palette.primary.main;
     const medium = palette.neutral.medium;
-    const [user, setUser] = useState({})
-    const token = useSelector((state) => state.token)
+    const [user, setUser] = useState({});
+    const token = useSelector((state) => state.token);
+
 
     // check for the screen size
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-
-
 
     const getUser = async (userId) => {
         const response = await fetch(`http://localhost:5000/users/${userId}`, {
@@ -33,110 +35,111 @@ const ProfilePage = () => {
         const data = await response.json();
         setUser(data);
     };
+
     useEffect(() => {
-        getUser(userId)
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        getUser(userId);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <>
-            <NavbarPage />
-            <Box
-                border={""}
-                width="100%"
-                height="90%"
-                display="flex"
-                sx={{
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}
-            >
+        <Box
+            width="100%"
+            padding="1rem 6%"
+        >
+            <WidgetWrapper>
+                {/* Cover Picture Section */}
                 <Box
-                    height="90%"
-                    width={isNonMobileScreens ? "65%" : "90%"}
-                    display={isNonMobileScreens ? "flex" : ""}
-                    flexDirection="row"
+                    position="relative"
+                    width="100%"
+                    height="200px"
+                    sx={{
+                        backgroundImage: `url(https://images.template.net/wp-content/uploads/2014/11/HD-LANDSCAPE-WALLPAPER-FACEBOOK-COVER.jpg?width=530)`, // Replace with the actual cover image URL
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        borderRadius: "8px", // optional, for rounded corners
+                    }}
                 >
+                    {/* User Image in Absolute Position */}
                     <Box
-                        display="flex"
-                        flexDirection="column"
-                        flexBasis="50%"
-                        sx={{
-                            justifyContent: "center",
-                            borderRadius: "15px",
-                            margin: "auto",
-                            padding: "1%",
-                            backgroundColor: dark,
-                            textAlign: "center"
-                        }}
+                        position="absolute"
+                        bottom="-30px" // Adjust this value as needed
+                        left="20px"
+                        zIndex="10"
+                        width={"130px"}
+                        height={"130px"}
                     >
-                        <Box
-                            display="flex"
-                            
-                            flexBasis="20%"
-                            sx={{
-                                backgroundColor: "yellow",
-                            }}
-                        >
-                            <FlexBetween>
-                                <Box
-                                    color={"black"}
-                                    padding={"1rem"}
-                                    
-                                >
-                                    <h1>NetNest</h1>
-                                </Box>
-                            </FlexBetween>
-                        </Box>
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            position="relative"
-                            alignItems="center"
-                            flexBasis="60%"
-                            sx={{
-                                backgroundColor: `${theme.palette.mode === "dark" ? primaryLight : neutralLight}`
-                            }}
-                        >
-                            <Typography
-                                variant='h1'
-                                fontWeight="800"
-                                padding="2%"
-                                fontSize="5rem"
-                                position="absolute"
-                                top="50px"
-                                lineHeight={.7}
-                            >
-                                {user.firstName}<br />{user.lastName}
-                            </Typography>
-                            <Typography
-                                variant='body1'
-                                position="absolute"
-                                top="200px"
-                                left="100px"
-                                right="100px"
-                            >
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, atque? Nisi labore dolore ex veniam? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima ipsum eum neque sit fugit dolorem veritatis illum quae natus praesentium?
-                            </Typography>
-                        </Box>
-                        <Box
-                            display="flex"
-                            flexBasis="20%"
-                            sx={{
-                                backgroundColor: "yellow"
-                            }}
-                        >
-
-                        </Box>
+                        <UserImage image={user.picturePath} size="100%" />
                     </Box>
+                    {/* User Image in Absolute Position */}
                     <Box
-                        flexBasis="50%"
+                        position="absolute"
+                        bottom="30px" // Adjust this value as needed
+                        right="20px"
+                        zIndex="10"
                     >
-                        <img src={`http://localhost:5000/images/${user.picturePath}`} alt="User Image" height={"100%"} width={"100%"} style={{ objectFit: "cover", padding: "10px" }} />
+                        <Button
+                            fullWidth
+                            sx={{
+                                px: "3rem",
+                                py: "0.5rem",
+                                backgroundColor: palette.primary.dark,
+                                color: palette.background.alt,
+                                "&:hover": { color: palette.primary.main },
+                                border: "1px solid black",
+                                borderRadius: "10px",
+                                fontSize: "12px",
+                                fontWeight: "900"
+                            }}
+                        >
+                            Edit cover
+                        </Button>
                     </Box>
                 </Box>
-            </Box>
-        </>
-    )
-}
+                {/* User Info Section */}
+                <Box marginTop="40px" display={"flex"} justifyContent={"space-between"} alignContent={"baseline"}> {/* Adjust margin for spacing */}
+                    <Box>
+                        <Typography variant="h4" color={dark} fontWeight="500">
+                            {user.firstName} {user.lastName}
+                        </Typography>
+                        <Typography color={medium}>
+                            CTO {/* Replace with actual position or additional info */}
+                        </Typography>
+                    </Box>
+                    <Box
+                        marginRight={"20px"}
+                    >
+                        <Button
+                            fullWidth
+                            sx={{
+                                px: "3rem",
+                                py: "0.5rem",
+                                backgroundColor: palette.primary.dark,
+                                color: palette.background.alt,
+                                border: "1px solid black",
+                                "&:hover": { color: palette.primary.main },
+                                borderRadius: "10px",
+                                fontWeight: "bolder",
+                                fontSize: "12px",
+                            }}
+                        >
+                            Edit Profile
+                        </Button>
+                    </Box>
+                </Box>
+                <Box
+                    display="flex"
+                    flexDirection={isNonMobileScreens ? "row" : "column"}
+                    justifyContent={"space-between"}
+                >
+                    <About />
+                    <Box width={"100%"}>
+                        <PostsWidget userId={userId} isProfile={true} />
+                    </Box>
 
-export default ProfilePage
+                </Box>
+            </WidgetWrapper>
+
+        </Box>
+    );
+};
+
+export default ProfilePage;

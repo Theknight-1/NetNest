@@ -16,6 +16,7 @@ import {
     Button,
     IconButton,
     useMediaQuery,
+    CircularProgress,
 } from "@mui/material";
 import FlexBetween from "/src/components/FlexBetween";
 import Dropzone from "react-dropzone";
@@ -26,14 +27,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "/src/state";
 import { API_URL } from "../../constant/config";
 
+import { useLoading } from "../../hooks/useLoading";
+
 // eslint-disable-next-line react/prop-types
 const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
+    const { isLoading, startLoading, stopLoading } = useLoading();
     const [isImage, setIsImage] = useState(false);
     const [image, setImage] = useState(null);
     const [post, setPost] = useState("");
     const { palette } = useTheme();
-    const { _id } = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user);
+    const _id = user?._id || "";
     const token = useSelector((state) => state.token);
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const mediumMain = palette.neutral.mediumMain;
@@ -48,6 +53,7 @@ const MyPostWidget = ({ picturePath }) => {
             formData.append("picturePath", encodeURIComponent(image.name)); // Encode the file name
         }
         try {
+            startLoading();
             const response = await fetch(`${API_URL}/posts`, {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
@@ -59,7 +65,7 @@ const MyPostWidget = ({ picturePath }) => {
                 console.error("Failed to post:", errorData.message);
                 return;
             }
-
+            stopLoading();
             const posts = await response.json();
             dispatch(setPosts({ posts }));
             setImage(null);
@@ -69,10 +75,9 @@ const MyPostWidget = ({ picturePath }) => {
         }
     };
 
-
     return (
         <WidgetWrapper>
-            <FlexBetween gap="1.5rem" >
+            <FlexBetween gap="1.5rem">
                 <UserImage image={picturePath} />
                 <InputBase
                     placeholder="What's on your mind..."
@@ -166,20 +171,36 @@ const MyPostWidget = ({ picturePath }) => {
                         <MoreHorizOutlined sx={{ color: mediumMain }} />
                     </FlexBetween>
                 )}
-
                 <Button
-                    disabled={!post}
+                    aria-label="Post button"
                     onClick={handlePost}
+                    disabled={isLoading || !post}
                     sx={{
                         color: palette.background.alt,
-                        backgroundColor: palette.primary.main,
+                        backgroundColor: palette.primary.dark,
                         borderRadius: "3rem",
+                        cursor: isLoading || !post ? "not-allowed" : "pointer",
                     }}
                 >
-                    <span style={{ color: "black" }}>POST</span>
+                    {isLoading ? (
+                        <Box
+                            component="span"
+                            sx={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: 20,
+                                height: 20,
+                            }}
+                        >
+                            <CircularProgress size={20} color="primary" />
+                        </Box>
+                    ) : (
+                        <>Post</>
+                    )}
                 </Button>
             </FlexBetween>
-        </WidgetWrapper>
+        </WidgetWrapper >
     );
 };
 

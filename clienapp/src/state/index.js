@@ -23,9 +23,9 @@ export const authSlice = createSlice({
       Cookies.set("Authorization", action.payload.token, { expires: 7 });
     },
     setLogout: (state) => {
+      Cookies.remove("Authorization");
       state.user = null;
       state.token = null;
-      Cookies.remove("Authorization");
     },
     setFriends: (state, action) => {
       if (state.user) {

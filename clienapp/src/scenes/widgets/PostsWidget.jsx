@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "/src/state";
+import { setPosts } from "../../state/index";
 import PostWidget from "./PostWidget";
 import { API_URL } from "../../constant/config";
 
@@ -78,6 +79,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             userPicturePath={userPicturePath}
             likes={likes}
             comments={comments}
+            isProfile={isProfile}
           />
         )
       )}

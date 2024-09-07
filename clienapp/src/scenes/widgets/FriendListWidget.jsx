@@ -10,7 +10,7 @@ const FriendListWidget = ({ userId }) => {
     const dispatch = useDispatch();
     const { palette } = useTheme();
     const token = useSelector((state) => state.token);
-    const friends = useSelector((state) => state.user.friends);
+    const friends = useSelector((state) => state.user?.friends);
 
     const getFriends = async (userId) => {
         const response = await fetch(
@@ -53,7 +53,7 @@ const FriendListWidget = ({ userId }) => {
                     />
                 ))}
                 {
-                    friends.length === 0 && (
+                    friends?.length === 0 && (
                         <div style={{ textAlign: "center" }}>
                             NO FRIENDS TO SHOW
                             <br />

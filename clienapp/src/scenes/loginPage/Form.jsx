@@ -57,13 +57,15 @@ const Form = () => {
     const isLogin = pageType === "login";
     const isRegister = pageType === "register";
 
+    const [loading, setloadiing] = useState(false)
+
 
     useEffect(() => {
         const token = Cookies.get("Authorization")
         if (token) {
             return navigate("/home")
         }
-    }, [])
+    }, [navigate])
 
     // FUNCTION FOR REGISTERING THE USER
     const register = async (values, onSubmitProps) => {
@@ -82,6 +84,7 @@ const Form = () => {
         formData.append("picturePath", values.picture.name);
 
         try {
+            setloadiing(true)
             const savedUserResponse = await fetch(`${API_URL}/auth/register`, {
                 method: "POST",
                 body: formData,
@@ -91,6 +94,7 @@ const Form = () => {
             onSubmitProps.resetForm();
 
             if (savedUser) {
+                setloadiing(false)
                 setPageType("login");
             }
         } catch (error) {
@@ -263,6 +267,7 @@ const Form = () => {
                     <Box>
                         <Button
                             fullWidth
+                            disabled={loading}
                             type="submit"
                             sx={{
                                 m: "2rem 0",
@@ -272,6 +277,8 @@ const Form = () => {
                                 "&:hover": { color: palette.primary.main },
                             }}
                         >
+
+
                             {isLogin ? "LOGIN" : "REGISTER"}
                         </Button>
                         <Typography

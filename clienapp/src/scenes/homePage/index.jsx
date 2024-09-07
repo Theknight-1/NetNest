@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react"
 import { Box, useMediaQuery } from "@mui/material";
-import NavbarPage from "../navbar/index";
 import { useSelector } from "react-redux";
 import UserWidget from "/src/scenes/widgets/UserWidget";
 import PostsWidget from "/src/scenes/widgets/PostsWidget";
@@ -10,18 +9,19 @@ import FriendListWidget from "/src/scenes/widgets/FriendListWidget";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const { _id, picturePath } = useSelector((state) => state.user);
-
+  const user = useSelector((state) => state.user);
+  const _id = user?._id || "";
+  const picturePath = user?.picturePath || "";
 
 
 
   return (
     <Box>
-      <NavbarPage />
       <Box
         width="100%"
         padding="1rem 6%"
-        display={isNonMobileScreens ? "flex" : ""}
+        display="flex"
+        flexDirection={isNonMobileScreens ? "row" : "column"}
         gap="0.5rem"
         justifyContent="space-between"
       >

@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import {
-    ChatBubbleOutlineOutlined,
+
     FavoriteBorderOutlined,
     FavoriteOutlined,
     ShareOutlined,
+
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "/src/components/FlexBetween";
@@ -28,13 +29,14 @@ const PostWidget = ({
     const [isComments, setIsComments] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
-    const loggedInUserId = useSelector((state) => state.user._id);
+    const loggedInUserId = useSelector((state) => state.user?._id);
     const isLiked = Boolean(likes[loggedInUserId]);
     const likeCount = Object.keys(likes).length;
 
     const { palette } = useTheme();
     const main = palette.neutral.main;
     const primary = palette.primary.main;
+
 
     const patchLike = async () => {
         const response = await fetch(`${API_URL}/posts/${postId}/like`, {
@@ -56,6 +58,8 @@ const PostWidget = ({
                 name={name}
                 subtitle={location}
                 userPicturePath={userPicturePath}
+                isProfile
+                postId={postId}
             />
             <Typography color={main} sx={{ mt: "1rem" }}>
                 {description}
@@ -74,7 +78,7 @@ const PostWidget = ({
                     <FlexBetween gap="0.3rem">
                         <IconButton onClick={patchLike}>
                             {isLiked ? (
-                                <FavoriteOutlined sx={{ color: primary }} />
+                                <FavoriteOutlined sx={{ color: palette.primary.dark }} />
                             ) : (
                                 <FavoriteBorderOutlined />
                             )}

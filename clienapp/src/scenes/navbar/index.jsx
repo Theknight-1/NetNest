@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Box,
   IconButton,
@@ -24,33 +24,38 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import FlexBetween from "../../components/FlexBetween"
 import UserImage from '../../components/UserImage'
-import { setMode, setLogout } from '/src/state/index.js'
+import { setMode, setLogout } from '../../state/index'
 
 
 
 const NavbarPage = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const [fullName, setFullName] = useState(null);
+  const [fullName, setFullName] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const { userId, picturePath } = user;
+  const picturePath = user?.picturePath || "";
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
+  // const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   useEffect(() => {
-    if (user === null) {
+    if (user === "") {
       navigate("/")
     } else {
       const Name = ` ${user.firstName} ${user.lastName} `
       setFullName(Name)
     }
-  }, [user])
+  }, [navigate, user])
+
+  const handleLogOut = () => {
+    navigate("/")
+    dispatch(setLogout())
+  }
 
   return (
     <FlexBetween padding='.6rem 6%' backgroundColor={alt}>
@@ -74,6 +79,7 @@ const NavbarPage = () => {
         {
           isNonMobileScreens && (
             <FlexBetween backgroundColor={
+              // eslint-disable-next-line no-constant-condition
               theme.palette.mode = "light" ? dark : neutralLight
             }
               borderRadius="9px"
@@ -121,6 +127,9 @@ const NavbarPage = () => {
             >
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => navigate(`/profilepage/${user._id}`)}>
+                <Typography>{"Profile"}</Typography>
               </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>
                 Log Out
@@ -212,7 +221,7 @@ const NavbarPage = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
+                <MenuItem onClick={handleLogOut}>
                   Log Out
                 </MenuItem>
               </Select>

@@ -13,6 +13,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.14.16",
+    "@mui/lab": "^5.0.0-alpha.135",
     "@mui/material": "^5.16.7",
     "@reduxjs/toolkit": "^1.9.7",
     "dotenv": "^16.3.1",
