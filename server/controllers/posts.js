@@ -43,9 +43,10 @@ export const getFeedPosts = asyncHandler(async (req, res) => {
 export const getUserPosts = asyncHandler(async (req, res) => {
   try {
     const { userId } = req.params;
-    const posts = await Post.find({ userId });
+    const posts = await Post.find({ userId }).sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (error) {
+    console.log("GET_USER_POSTS", error.message);
     res.status(404).json({ message: error.message });
   }
 });
@@ -75,3 +76,19 @@ export const likePost = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+//DELETE
+export const DeleteUserPost = asyncHandler(async (req, res) => {
+  try {
+    const { postId } = req.params;
+    if (!postId) {
+      res.status(401).json({ message: "Missing Post Id" });
+    }
+    await Post.findByIdAndDelete(postId);
+    const post = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(post);
+  } catch (error) {
+    console.log("POST_DELETE", error.message);
+    res.status(404).json({ message: error.message });
+  }
+});
